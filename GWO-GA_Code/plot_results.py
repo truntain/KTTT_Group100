@@ -162,74 +162,75 @@ def run_hybrid_GWO_GA(nodes):
         
     return alpha_pos, history
 
+# ... (Các phần trên giữ nguyên) ...
+
 # ==========================================
-# 4. VẼ BIỂU ĐỒ (VISUALIZATION)
+# 4. VẼ BIỂU ĐỒ & LƯU ẢNH
 # ==========================================
 
 def plot_results(nodes, best_pos, history):
-    print("Đang vẽ biểu đồ kết quả...")
+    print("Đang xử lý và vẽ biểu đồ...")
     
-    # Tách tọa độ CH từ best_pos (DIM,) -> (NUM_CLUSTERS, 2)
+    # 1. Tách tọa độ CH từ best_pos
     chs = best_pos.reshape(NUM_CLUSTERS, 2)
     
-    # Phân cụm để tô màu
-    # Tính khoảng cách từ mỗi nút đến tất cả CH
+    # 2. Phân cụm (Gán nhãn cho nút về CH gần nhất)
     diff = nodes[:, np.newaxis, :] - chs[np.newaxis, :, :]
     dists = np.sqrt(np.sum(diff**2, axis=2))
-    labels = np.argmin(dists, axis=1) # Index của CH gần nhất
+    labels = np.argmin(dists, axis=1)
     
-    # Cấu hình biểu đồ
-    plt.figure(figsize=(14, 6))
+    # 3. Khởi tạo hình ảnh (1 hình chứa 2 biểu đồ con)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
     
-    # --- BIỂU ĐỒ 1: PHÂN CỤM ---
-    plt.subplot(1, 2, 1)
+    # --- BIỂU ĐỒ 1: KẾT QUẢ PHÂN CỤM WSN ---
     colors = ['red', 'green', 'blue', 'orange', 'purple', 'cyan', 'magenta']
     
     for k in range(NUM_CLUSTERS):
         cluster_nodes = nodes[labels == k]
         c = colors[k % len(colors)]
         
-        # Vẽ nút thường
-        plt.scatter(cluster_nodes[:, 0], cluster_nodes[:, 1], c=c, s=50, alpha=0.6, edgecolors='none')
+        # Vẽ các nút cảm biến (Sensor Nodes)
+        ax1.scatter(cluster_nodes[:, 0], cluster_nodes[:, 1], c=c, s=50, alpha=0.6, label=f'Cluster {k+1}')
         
-        # Vẽ đường nối về CH
+        # Vẽ đường nối từ Node về Cluster Head
         for node in cluster_nodes:
-            plt.plot([node[0], chs[k, 0]], [node[1], chs[k, 1]], c=c, alpha=0.15, linewidth=1)
+            ax1.plot([node[0], chs[k, 0]], [node[1], chs[k, 1]], c=c, alpha=0.1, linewidth=1)
             
-    # Vẽ Cluster Heads
-    plt.scatter(chs[:, 0], chs[:, 1], c='black', marker='*', s=250, edgecolors='white', linewidth=1.5, label='Cluster Heads')
+    # Vẽ các Trưởng cụm (Cluster Heads)
+    ax1.scatter(chs[:, 0], chs[:, 1], c='black', marker='*', s=300, edgecolors='yellow', linewidth=1.5, label='Cluster Heads')
     
-    plt.title('Kết quả Phân cụm WSN (Hybrid GWO-GA)')
-    plt.xlabel('X (m)')
-    plt.ylabel('Y (m)')
-    plt.xlim(0, AREA_SIZE)
-    plt.ylim(0, AREA_SIZE)
-    plt.legend(loc='upper right')
-    plt.grid(True, linestyle='--', alpha=0.5)
+    ax1.set_title(f'WSN Clustering Result (Pop={NUM_WOLVES}, Iter={MAX_ITER})')
+    ax1.set_xlabel('X Coordinate (m)')
+    ax1.set_ylabel('Y Coordinate (m)')
+    ax1.set_xlim(0, AREA_SIZE)
+    ax1.set_ylim(0, AREA_SIZE)
+    ax1.grid(True, linestyle='--', alpha=0.5)
     
-    # --- BIỂU ĐỒ 2: HỘI TỤ ---
-    plt.subplot(1, 2, 2)
-    plt.plot(range(1, MAX_ITER + 1), history, 'r-', linewidth=2.5)
-    plt.title('Tốc độ hội tụ')
-    plt.xlabel('Vòng lặp')
-    plt.ylabel('Tổng khoảng cách (Fitness)')
-    plt.grid(True)
+    # --- BIỂU ĐỒ 2: TỐC ĐỘ HỘI TỤ ---
+    ax2.plot(range(1, MAX_ITER + 1), history, 'r-o', linewidth=2, markersize=4)
+    ax2.set_title('Convergence Curve (Hybrid GWO-GA)')
+    ax2.set_xlabel('Iteration')
+    ax2.set_ylabel('Total Distance (Fitness)')
+    ax2.grid(True)
     
+    # 4. Lưu ảnh
     plt.tight_layout()
+    output_filename = 'Hybrid_GWO_GA_WSN_Result.png'
+    plt.savefig(output_filename, dpi=300, bbox_inches='tight')
+    print(f">>> Đã lưu ảnh kết quả tại: {output_filename}")
     plt.show()
 
 # ==========================================
 # 5. MAIN
 # ==========================================
 if __name__ == "__main__":
-    # Đặt seed để tái lập kết quả
-    np.random.seed(42)
+    np.random.seed(42) # Giữ cố định seed để bài báo cáo nhất quán
     
-    # 1. Khởi tạo mạng
+    # 1. Khởi tạo
     nodes = init_nodes()
     
-    # 2. Chạy thuật toán
+    # 2. Chạy tối ưu
     best_solution, convergence_history = run_hybrid_GWO_GA(nodes)
     
-    # 3. Vẽ kết quả
+    # 3. Vẽ và Lưu
     plot_results(nodes, best_solution, convergence_history)
