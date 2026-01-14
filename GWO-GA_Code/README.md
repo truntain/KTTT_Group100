@@ -1,13 +1,13 @@
-# Dự án Nghiên cứu & Ứng dụng thuật toán GWO
+# GWO-GA Hybrid Core (Python Version)
 
-Repository này chứa mã nguồn triển khai thuật toán Grey Wolf Optimizer (GWO) và các ứng dụng thực tiễn.
+Thư mục này chứa mã nguồn triển khai và thử nghiệm thuật toán lai ghép **Grey Wolf Optimizer (GWO)** và **Genetic Algorithm (GA)** sử dụng hoàn toàn ngôn ngữ **Python**.
 
-## Cấu trúc dự án
+## Mô tả
+Module này tập trung vào việc nghiên cứu cốt lõi của giải thuật lai (Hybrid Algorithm) và trực quan hóa kết quả chạy nghiệm.
 
-1.  **Core GWO Implementation**: 
-    - Mã nguồn gốc thuật toán GWO được viết bằng C.
-    - File: `main.c`
+## Thành phần chính
+* **Data Logs (`data_*.txt`)**: Các file dữ liệu lịch sử hội tụ và vị trí các tác tử (wolves/nodes) được ghi lại từ quá trình chạy thuật toán.
+* **Visualization (`plot_results.py`)**: Script Python dùng để vẽ đồ thị và phân tích kết quả từ các file dữ liệu.
 
-2.  **JCAS Multibeam Optimization (Python)**:
-    - Ứng dụng GWO để tối ưu hóa đa chùm tia cho hệ thống JCAS (6G).
-    - Chi tiết xem tại thư mục: [JCAS_GWO_Optimization](./JCAS_GWO_Optimization)
+## Điểm nổi bật
+* **Mục tiêu:** Kiểm chứng lý thuyết lai ghép, cải thiện khả năng thoát khỏi cực trị địa phương của GWO truyền thống bằng cơ chế lai ghép và đột biến của GA.
