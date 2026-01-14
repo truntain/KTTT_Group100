@@ -1,4 +1,4 @@
-# Ứng dụng Hybrid GWO-GA cho JCAS
+# Phần IV: Ứng dụng Hybrid GWO-GA cho JCAS
 
 Module này triển khai thuật toán lai ghép **GWO-GA (Grey Wolf Optimizer - Genetic Algorithm)** để giải quyết bài toán tối ưu hóa đa mục tiêu trong hệ thống JCAS (Joint Communication and Sensing).
 
