@@ -1,6 +1,6 @@
 # Nhóm 100 - Nghiên cứu và Ứng dụng Thuật toán Tối ưu cho JCAS
 
-Chào mừng đến với kho lưu trữ mã nguồn của Nhóm 100. Dự án này tập trung vào nghiên cứu thuật toán **Grey Wolf Optimizer (GWO)**, phát triển biến thể lai ghép **Hybrid GWO-GA** và ứng dụng thực tiễn vào bài toán tối ưu hóa búp sóng đa chức năng trong mạng 6G (JCAS - Joint Communication and Sensing).
+Dự án này tập trung vào nghiên cứu thuật toán **Grey Wolf Optimizer (GWO)**, phát triển biến thể lai ghép **Hybrid GWO-GA** và ứng dụng thực tiễn vào bài toán tối ưu hóa búp sóng đa chức năng trong mạng 6G (JCAS - Joint Communication and Sensing).
 
 ---
 
